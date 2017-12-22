@@ -2,7 +2,7 @@ import hlt.*;
 
 import java.util.ArrayList;
 
-public class MyBot {
+public class Default {
 
     public static void main(final String[] args) {
         final Networking networking = new Networking();
