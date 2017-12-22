@@ -33,7 +33,8 @@ public class MyBot {
                 }
 
                 boolean hasMove = false;
-                for (final Planet planet : gameMap.getAllPlanets().values()) {
+
+                for (final Planet planet : gameMap.nearbyPlanetsByDistance(ship).values()) {
                     if (planet.isOwned()) {
                         continue;
                     }
@@ -59,9 +60,9 @@ public class MyBot {
                 }
 
                 if (!hasMove) {
-                    Map<Double, Entity> nearby = gameMap.nearbyEntitiesByDistance(ship);
-                    for (Entity e : nearby.values()) {
-                        if (e.getOwner() != myId && e instanceof Ship) {
+                    Map<Double, Ship> nearby = gameMap.nearbyShipsByDistance(ship);
+                    for (final Ship e : nearby.values()) {
+                        if (e.getOwner() != myId) {
                             final ThrustMove newThrustMove = Navigation.navigateShipToDock(gameMap, ship, e, Constants.MAX_SPEED);
                             if (newThrustMove != null) {
                                 moveList.add(newThrustMove);

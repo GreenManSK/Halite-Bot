@@ -109,6 +109,33 @@ public class GameMap {
         return entityByDistance;
     }
 
+    public Map<Double, Planet> nearbyPlanetsByDistance(final Entity entity) {
+        final Map<Double, Planet> entityByDistance = new TreeMap<>();
+
+        for (final Planet planet : planets.values()) {
+            if (planet.equals(entity)) {
+                continue;
+            }
+            entityByDistance.put(entity.getDistanceTo(planet), planet);
+        }
+
+        return entityByDistance;
+    }
+
+    public Map<Double, Ship> nearbyShipsByDistance(final Entity entity) {
+        final Map<Double, Ship> entityByDistance = new TreeMap<>();
+
+
+        for (final Ship ship : allShips) {
+            if (ship.equals(entity)) {
+                continue;
+            }
+            entityByDistance.put(entity.getDistanceTo(ship), ship);
+        }
+
+        return entityByDistance;
+    }
+
     public GameMap updateMap(final Metadata mapMetadata) {
         final int numberOfPlayers = MetadataParser.parsePlayerNum(mapMetadata);
 
