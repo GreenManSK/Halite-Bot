@@ -164,6 +164,9 @@ public class GameMap {
         for (int i = 0; i < numberOfPlanets; ++i) {
             final List<Integer> dockedShips = new ArrayList<>();
             final Planet planet = MetadataParser.newPlanetFromMetadata(dockedShips, mapMetadata);
+            if (planet.isOwned()) {
+                players.get(planet.getOwner()).addPlanet(planet);
+            }
             planets.put(planet.getId(), planet);
         }
 

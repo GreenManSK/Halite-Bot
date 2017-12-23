@@ -7,11 +7,13 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class MyBot {
-
+    
     public static void main(final String[] args) {
         final Networking networking = new Networking();
         final GameMap gameMap = networking.initialize("Togepi");
         int myId = gameMap.getMyPlayerId();
+
+        final double CONQUERING_SLOW_BOUND = 1 / gameMap.getAllPlayers().size();
 
         // We now have 1 full minute to analyse the initial map.
         final String initialMapIntelligence =
@@ -27,6 +29,8 @@ public class MyBot {
             networking.updateMap(gameMap);
 
             HashSet<Planet> planetsOnList = new HashSet<>();
+
+            double myPlanetPercentage = gameMap.getMyPlayer().getPlanets().size() / gameMap.getAllPlanets().size();
             for (final Ship ship : gameMap.getMyPlayer().getShips().values()) {
                 if (ship.getDockingStatus() != Ship.DockingStatus.Undocked) {
                     continue;
@@ -35,7 +39,7 @@ public class MyBot {
                 boolean hasMove = false;
 
                 for (final Planet planet : gameMap.nearbyPlanetsByDistance(ship).values()) {
-                    if (planet.isOwned()) {
+                    if (planet.isOwned() && !(CONQUERING_SLOW_BOUND < myPlanetPercentage && !planet.isFull() && planet.getOwner() == myId)) {
                         continue;
                     }
 
